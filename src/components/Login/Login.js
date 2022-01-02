@@ -34,17 +34,17 @@ export default function Login({ setToken }) {
       <form onSubmit={handleSubmit}>
         <label>
           <p>Account Name</p>
-          <input type="text" onChange={ e => setAccountName(e.target.value) }/>
+          <input aria-label="Account Name" type="text" onChange={ e => setAccountName(e.target.value) }/>
         </label>
         <label>
           <p>Password</p>
-          <input type="password" onChange={ e=> setPassword(e.target.value) }/>
+          <input aria-label="Password" type="password" onChange={ e=> setPassword(e.target.value) }/>
         </label>
         <div>
           <button type="submit">Submit</button>
         </div>
         {error ? <div>
-          <label>{error}</label>
+          <label aria-label="Error">{error}</label>
         </div>: null}
       </form>
     </div>
