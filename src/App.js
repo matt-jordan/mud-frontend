@@ -3,7 +3,7 @@ import './App.css';
 import { BrowserRouter, Route, Routes } from 'react-router-dom';
 
 import Dashboard from './views/Dashboard/Dashboard';
-import Login from './components/Login/Login';
+import Login from './views/Login/Login';
 import Preferences from './views/Preferences/Preferences';
 import useToken from './components/App/useToken';
 
