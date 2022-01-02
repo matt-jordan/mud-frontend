@@ -1,6 +1,6 @@
 import React from 'react';
 
-export default function Preferences() {
+export default function Dashboard() {
   return (
     <h2>Dashboard</h2>
   );
