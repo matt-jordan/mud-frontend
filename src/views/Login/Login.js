@@ -10,14 +10,33 @@ async function loginUser(credentials) {
   return response.data.sessionId;
 }
 
+async function createAccount(params) {
+  const { accountName, email, password } = params;
+
+  const response = await axios.post(
+    `http://localhost:8080/accounts/${accountName}`,
+    { email, password });
+
+  return response;
+}
+
 export default function Login({ setToken }) {
   const [accountName, setAccountName] = useState();
   const [password, setPassword] = useState();
+  const [email, setEmail] = useState();
   const [error, setError] = useState();
+  const [formState, setFormState] = useState('login');
 
   const handleSubmit = async e => {
     e.preventDefault();
     try {
+      if (formState === 'create-account') {
+        await createAccount({
+          accountName,
+          password,
+          email,
+        });
+      }
       const token = await loginUser({
         accountName,
         password
@@ -26,6 +45,10 @@ export default function Login({ setToken }) {
     } catch (error) {
       setError(error.message);
     }
+  }
+
+  const handleToggle = () => {
+    setFormState(formState === 'login' ? 'create-account' : 'login');
   }
 
   return (
@@ -40,8 +63,17 @@ export default function Login({ setToken }) {
           <p>Password</p>
           <input aria-label="Password" type="password" onChange={ e=> setPassword(e.target.value) }/>
         </label>
+        {formState === 'login' ? null :
+          <label>
+            <p>E-Mail</p>
+            <input aria-label="E-Mail" type="text" onChange={ e => setEmail(e.target.value) }/>
+          </label>
+        }
         <div>
           <button type="submit">Submit</button>
+        </div>
+        <div>
+          <button type="button" onClick={handleToggle}>{formState === 'login' ? 'Create Account' : 'Login'}</button>
         </div>
         {error ? <div>
           <label aria-label="Error">{error}</label>
