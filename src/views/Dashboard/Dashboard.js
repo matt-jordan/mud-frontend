@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 
 import './Dashboard.css';
 
+import CharacterGameWindow from '../../components/CharacterGameWindow/CharacterGameWindow';
 import { getAllCharacterDetails } from '../../utils/restAPI';
 
 export default function Dashboard({ account }) {
@@ -18,12 +19,21 @@ export default function Dashboard({ account }) {
     }
   }, [account]);
 
+  const characterElements = characters.map((character) => {
+    return (
+      <CharacterGameWindow key={character.id} character={ character } />
+    );
+  })
+
   return (
-    <div className="dashboard">
-      <div className="main-pane">
+    <React.Fragment>
+      <div className="header">
         <h2>Main</h2>
       </div>
-    </div>
+      <div className="main-pane">
+        {characterElements}
+      </div>
+    </React.Fragment>
   );
 }
 

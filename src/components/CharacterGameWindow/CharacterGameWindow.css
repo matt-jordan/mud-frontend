@@ -1,0 +1,10 @@
+.character-panel {
+  margin: 10px;
+  height: 320px;
+  min-width:  320px;
+  overflow-y: auto;
+  overflow-x: hidden;
+  border: 1px solid gray;
+  border-radius: 5px;
+  flex: 0 0;
+}
