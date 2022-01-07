@@ -1,27 +1,11 @@
 import React, { useState } from 'react';
 import PropTypes from 'prop-types';
-import axios from 'axios';
 import './login.css';
 
-// ToDo: Move this to a set of functions and/or elsewhere. Or something.
-async function loginUser(credentials) {
-  const response = await axios.post('http://localhost:8080/login', credentials);
+import { login, createAccount } from '../../utils/restAPI';
 
-  return response.data.sessionId;
-}
-
-async function createAccount(params) {
-  const { accountName, email, password } = params;
-
-  const response = await axios.post(
-    `http://localhost:8080/accounts/${accountName}`,
-    { email, password });
-
-  return response;
-}
-
-export default function Login({ setToken }) {
-  const [accountName, setAccountName] = useState();
+export default function Login({ setToken, setAccountName }) {
+  const [accountName, setAccountNameLocal] = useState();
   const [password, setPassword] = useState();
   const [email, setEmail] = useState();
   const [error, setError] = useState();
@@ -31,17 +15,11 @@ export default function Login({ setToken }) {
     e.preventDefault();
     try {
       if (formState === 'create-account') {
-        await createAccount({
-          accountName,
-          password,
-          email,
-        });
+        await createAccount({ accountName, password, email });
       }
-      const token = await loginUser({
-        accountName,
-        password
-      });
-      setToken(token);
+      const { sessionId } = await login(accountName, password);
+      setToken(sessionId);
+      setAccountName(accountName);
     } catch (error) {
       setError(error.message);
     }
@@ -57,7 +35,7 @@ export default function Login({ setToken }) {
       <form onSubmit={handleSubmit}>
         <label>
           <p>Account Name</p>
-          <input aria-label="Account Name" type="text" onChange={ e => setAccountName(e.target.value) }/>
+          <input aria-label="Account Name" type="text" onChange={ e => setAccountNameLocal(e.target.value) }/>
         </label>
         <label>
           <p>Password</p>
@@ -85,4 +63,5 @@ export default function Login({ setToken }) {
 
 Login.propTypes = {
   setToken: PropTypes.func.isRequired,
+  setAccountName: PropTypes.func.isRequired,
 };

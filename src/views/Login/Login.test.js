@@ -8,7 +8,7 @@ jest.mock('axios');
 
 describe('when logging in', () => {
   test('renders basic fields', () => {
-    render(<Login setToken={() => { }}/>);
+    render(<Login setToken={() => { }} setAccountName={() => { }}/>);
 
     const accountNameElement = screen.getByText(/Account Name/);
     expect(accountNameElement).toBeInTheDocument();
@@ -24,7 +24,7 @@ describe('when logging in', () => {
   });
 
   test('it switches to account creation mode when the create account button is pressed', () => {
-    render(<Login setToken={() => { }}/>);
+    render(<Login setToken={() => { }} setAccountName={() => { }}/>);
 
     const accountCreateButton = screen.getByText(/Create Account/);
     expect(accountCreateButton).toBeInTheDocument();
@@ -49,8 +49,11 @@ describe('when logging in', () => {
 
   test('it attempts to login when the submit button is pressed and sets the token', async () => {
     let actualToken;
+    let actualAccountName;
 
-    render(<Login setToken={(token) => {
+    render(<Login setAccountName={(accountName) => {
+      actualAccountName = accountName;
+    }} setToken={(token) => {
       actualToken = token;
     }}/>);
 
@@ -76,12 +79,16 @@ describe('when logging in', () => {
       password: 'bar',
     });
     expect(actualToken).toEqual('foobar');
+    expect(actualAccountName).toEqual('foo');
   });
 
   test('it displays an error if the server fails to login', async () => {
     let actualToken;
+    let actualAccountName;
 
-    render(<Login setToken={(token) => {
+    render(<Login setAccountName={(accountName) => {
+      actualAccountName = accountName;
+    }} setToken={(token) => {
       actualToken = token;
     }}/>);
 
@@ -107,14 +114,18 @@ describe('when logging in', () => {
       password: 'bar',
     });
     expect(actualToken).toBeUndefined();
+    expect(actualAccountName).toBeUndefined();
   });
 });
 
 describe('when creating the account', () => {
   let actualToken;
+  let actualAccountName;
 
   function preTestSetup() {
-    render(<Login setToken={(token) => {
+    render(<Login setAccountName={(accountName) => {
+      actualAccountName = accountName;
+    }} setToken={(token) => {
       actualToken = token;
     }}/>);
     const accountCreateButton = screen.getByText(/Create Account/);
@@ -201,5 +212,6 @@ describe('when creating the account', () => {
       password: 'bar',
     });
     expect(actualToken).toEqual('session');
+    expect(actualAccountName).toEqual('foo');
   });
 });

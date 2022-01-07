@@ -21,6 +21,6 @@ test('when logged in, it renders the dashboard', () => {
 
   render(<App />);
 
-  const dashboardElement = screen.getByText(/Dashboard/);
+  const dashboardElement = screen.getByText(/Main/);
   expect(dashboardElement).toBeInTheDocument();
 });

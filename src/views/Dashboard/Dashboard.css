@@ -1,0 +1,10 @@
+.dashboard {
+  display: flex;
+  margin-left: 60px;
+}
+.sidebar {
+  flex: 1 0 auto;
+}
+.main-pane {
+  flex: 4 0 auto;
+}

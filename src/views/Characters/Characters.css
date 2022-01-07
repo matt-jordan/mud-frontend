@@ -1,0 +1,9 @@
+.header {
+  margin-left: 60px;
+}
+.main-pane {
+  display: flex;
+  flex-wrap: wrap;
+  overflow: auto;
+  margin-left: 60px;
+}
