@@ -3,18 +3,7 @@ import './Characters.css';
 
 import CharacterDisplay from '../../components/CharacterDisplay/CharacterDisplay';
 import CharacterCreation from '../../components/CharacterCreation/CharacterCreation';
-import { getAccountDetails, getCharacterDetails } from '../../utils/restAPI';
-
-async function getCharacters(account) {
-  const characters = [];
-
-  const promises = account.characterIds.map((characterId) => getCharacterDetails(characterId));
-  await Promise.all(promises).then((results) => {
-    characters.push(...results);
-  });
-
-  return characters;
-}
+import { getAccountDetails, getAllCharacterDetails } from '../../utils/restAPI';
 
 export default function Characters({ account }) {
   const [characters, setCharacters] = useState([]);
@@ -22,7 +11,7 @@ export default function Characters({ account }) {
   useEffect(() => {
     if (account) {
       const wrapper = async () => {
-        const results = await getCharacters(account);
+        const results = await getAllCharacterDetails(account);
         setCharacters(results);
       };
       wrapper();
@@ -38,7 +27,7 @@ export default function Characters({ account }) {
   const onCharacterCreated = async (character) => {
     // For now, do nothing with the new character?
     account = await getAccountDetails(account.accountName);
-    const results = await getCharacters(account);
+    const results = await getAllCharacterDetails(account);
     setCharacters(results);
   };
 

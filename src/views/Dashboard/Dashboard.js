@@ -3,19 +3,20 @@ import PropTypes from 'prop-types';
 
 import './Dashboard.css';
 
-import { getAccountDetails } from '../../utils/restAPI';
+import { getAllCharacterDetails } from '../../utils/restAPI';
 
-export default function Dashboard({ accountName }) {
-  const [account, setAccount] = useState();
+export default function Dashboard({ account }) {
+  const [characters, setCharacters] = useState([]);
 
   useEffect(() => {
-    if (accountName) {
-      getAccountDetails(accountName)
-        .then((fullAccount) => {
-          setAccount(fullAccount);
-        });
+    if (account) {
+      const wrapper = async () => {
+        const results = await getAllCharacterDetails(account);
+        setCharacters(results);
+      };
+      wrapper();
     }
-  });
+  }, [account]);
 
   return (
     <div className="dashboard">
@@ -27,5 +28,5 @@ export default function Dashboard({ accountName }) {
 }
 
 Dashboard.propTypes = {
-  accountName: PropTypes.string,
+  account: PropTypes.object,
 };

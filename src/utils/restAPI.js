@@ -36,6 +36,14 @@ async function getAccountDetails(accountName) {
   return response.data;
 }
 
+async function createCharacter(params) {
+  const response = await axios.post(`${serverUri}/characters`, params, {
+      headers: { ...authHeader }
+  });
+
+  return response.data;
+}
+
 async function getCharacterDetails(characterId) {
   const response = await axios.get(`${serverUri}/characters/${characterId}`, {
     headers: { ...authHeader }
@@ -44,12 +52,15 @@ async function getCharacterDetails(characterId) {
   return response.data;
 }
 
-async function createCharacter(params) {
-  const response = await axios.post(`${serverUri}/characters`, params, {
-      headers: { ...authHeader }
+async function getAllCharacterDetails(account) {
+  const characters = [];
+
+  const promises = account.characterIds.map((characterId) => getCharacterDetails(characterId));
+  await Promise.all(promises).then((results) => {
+    characters.push(...results);
   });
 
-  return response.data;
+  return characters;
 }
 
 
@@ -59,5 +70,6 @@ export {
   createAccount,
   getAccountDetails,
   createCharacter,
+  getAllCharacterDetails,
   getCharacterDetails,
 };
