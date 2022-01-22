@@ -1,7 +1,7 @@
 
 const moveCharacter = (textOptions, options) => {
   return {
-    messageType: 'MoveCharacter',
+    messageType: 'Move',
     parameters: textOptions,
     characterId: options.characterId,
   };

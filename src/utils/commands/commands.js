@@ -8,7 +8,7 @@ const commandRegistry = {
   'move': moveCharacter,
 };
 
-let authHeader;
+let authHeader = {};
 
 // NOTE: We are explicitly not trying to figure out command sets just yet here.
 // We could use an authorization token to tell us what command sets they're
@@ -22,13 +22,13 @@ function buildCommand(text, options) {
   try {
     const tokens = text.split(' ');
     if (tokens.length === 0) {
-      throw CommandException('Command length cannot be 0');
+      throw new CommandException('Command length cannot be 0');
     }
     command = tokens[0];
     tokens.shift();
 
     if (!(command in commandRegistry)) {
-      throw CommandException(`Unknown command: ${command}`, command);
+      throw new CommandException(`Unknown command: ${command}`, command);
     }
 
     const output = commandRegistry[command](tokens, options);
