@@ -1,6 +1,7 @@
 import { useState } from 'react';
 
 import { initAPI } from '../../utils/restAPI';
+import { initCommands } from '../../utils/commands/commands';
 
 export default function useToken() {
   const getToken = () => {
@@ -8,6 +9,7 @@ export default function useToken() {
     const accountToken = JSON.parse(tokenString);
 
     initAPI(accountToken);
+    initCommands(accountToken);
     return accountToken;
   };
 
@@ -15,6 +17,7 @@ export default function useToken() {
     sessionStorage.setItem('token', JSON.stringify(accountToken));
 
     initAPI(accountToken);
+    initCommands(accountToken);
     setToken(accountToken);
   };
 

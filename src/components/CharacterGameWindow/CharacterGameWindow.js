@@ -2,49 +2,48 @@ import React, { useEffect, useState, useRef } from 'react';
 import PropTypes from 'prop-types';
 import './CharacterGameWindow.css'
 
-import useToken from '../App/useToken';
+import { buildCommand } from '../../utils/commands/commands';
 import Message from '../Message/Message';
 
 export default function CharacterGameWindow({ character }) {
-  const { token } = useToken();
   const [messages, setMessages] = useState([]);
   const [textInput, setTextInput] = useState();
+  const messagesEndRef = useRef(null);
   let ws = useRef();
+
+  const scrollToBottom = () => {
+    messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
+  };
 
   useEffect(() => {
     if (ws && !ws.current) {
       ws.current = new window.WebSocket('ws://localhost:8080');
       ws.current.addEventListener('open', () => {
-        ws.current.send(JSON.stringify({
-          auth: token,
-          messageType: 'LoginCharacter',
-          characterId: `${character.id}`,
-        }));
+        const loginCommand = buildCommand('login', { characterId: character.id });
+
+        ws.current.send(loginCommand);
       });
       ws.current.addEventListener('close', (e) => {
         console.log({e}, 'connection closed');
       });
       ws.current.addEventListener('message', (e) => {
         messages.push(e);
-        setMessages(messages);
+        setMessages([...messages]);
+        scrollToBottom();
       });
     }
 
     return () => { ws.current = null; };
-  }, [character, token, messages]);
+  }, []);
 
   const handleSubmit = async e => {
     e.preventDefault();
-    console.log(ws.current);
     try {
-      ws.current.send(JSON.stringify({
-        auth: token,
-        messageType: 'MoveCharacter',
-        characterId: `${character.id}`,
-        direction: textInput,
-      }));
+      ws.current.send(buildCommand(textInput, { characterId: character.id }));
     } catch (error) {
+      console.log(error);
     }
+    document.getElementById('input-form').reset();
   }
 
   return (
@@ -58,11 +57,13 @@ export default function CharacterGameWindow({ character }) {
             return <Message key={i} message={message} />
           })}
         </div>
-        <form onSubmit={handleSubmit}>
-          <div className="input-area">
-            <input type="text" placeholder="..." onChange={ e=> setTextInput(e.target.value) }/>
-          </div>
-        </form>
+        <div ref={messagesEndRef}>
+          <form id="input-form" onSubmit={handleSubmit}>
+            <div className="input-area">
+              <input type="text" placeholder="..." onChange={ e=> setTextInput(e.target.value) }/>
+            </div>
+          </form>
+        </div>
       </div>
     </React.Fragment>
   );
