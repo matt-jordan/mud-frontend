@@ -72,4 +72,3 @@ export default function CharacterGameWindow({ character }) {
 CharacterGameWindow.propTypes = {
   character: PropTypes.object.isRequired,
 };
-
