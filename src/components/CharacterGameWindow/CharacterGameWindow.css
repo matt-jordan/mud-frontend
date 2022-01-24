@@ -11,10 +11,22 @@
 .character-panel {
   margin: 10px;
   height: 320px;
+  min-width: 320px;
+  border: 1px solid gray;
+  border-radius: 5px;
+}
+
+.character-panel-information {
+  font-weight: bold;
+  font-size: 8pt;
+  font-family: monospace;
+}
+
+.message-area {
+  height: 240px;
   min-width:  320px;
   overflow-y: auto;
   overflow-x: hidden;
   border: 1px solid gray;
   border-radius: 5px;
-  flex: 0 0;
 }

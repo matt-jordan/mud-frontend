@@ -39,6 +39,61 @@ Logs a character into the game.
 
 Events are sent from the game to the client.
 
+## PlayerCharacterUpdate
+
+A message about the state of a player character. Typically sent when their state has changed.
+
+```
+{
+	event: 'PlayerCharacterUpdate',
+	characterId: String,
+	attributes: {
+		hitpoints: {
+			max: number,
+			current: number
+		},
+		manapoints: {
+			max: number,
+			current: number
+		},
+		energypoints: {
+			max: number,
+			current: number
+		}
+	}
+}
+
+```
+
+## RoomDetails
+
+A detailed message about the state of a room. Typically sent when a character moves into a room or does a detailed examination (or look) at the state of a room around them.
+
+```
+{
+	event: 'RoomDetails',
+	roomId: String,
+	summary: String,
+	description: String,
+	exits: [
+		{
+			direction: String,
+		}
+	],
+	characters: [
+		{
+			summary: String,
+		}
+	],
+	objects: [
+		{
+			summary: String,
+		}
+	]
+}
+
+```
+
 ## TextMessage
 
 A raw text message sent from the service. These have a raw message in them that should be displayed to the characters.

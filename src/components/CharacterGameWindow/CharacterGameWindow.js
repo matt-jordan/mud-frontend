@@ -15,7 +15,7 @@ import Message from '../Message/Message';
 
 export default function CharacterGameWindow({ character }) {
   const [messages, setMessages] = useState([]);
-  const [textInput, setTextInput] = useState();
+  const [textInput, setTextInput] = useState('');
   const messagesEndRef = useRef(null);
   let ws = useRef();
 
@@ -35,9 +35,17 @@ export default function CharacterGameWindow({ character }) {
         console.log({e}, 'connection closed');
       });
       ws.current.addEventListener('message', (e) => {
-        messages.push(e);
-        setMessages([...messages]);
-        scrollToBottom();
+        const jsonMessage = JSON.parse(e.data);
+        switch(jsonMessage.messageType) {
+          case 'RoomDetails':
+          case 'TextMessage':
+            messages.push(jsonMessage);
+            setMessages([...messages]);
+            scrollToBottom();
+          break;
+          default:
+            console.warn('Unknown message type: ', e);
+        }
       });
     }
 
@@ -51,24 +59,30 @@ export default function CharacterGameWindow({ character }) {
     } catch (error) {
       console.log(error);
     }
-    document.getElementById('input-form').reset();
-  }
+    setTextInput('');
+  };
+
+  const handleTextInputChange = async e => {
+    setTextInput(e.target.value);
+  };
 
   return (
     <React.Fragment>
       <div className="character-panel">
-        <label aria-label="Character Name">
+        <div className="character-panel-information" aria-label="Character Name">
           <p>Name: {character.name}</p>
-        </label>
-        <div className="message-area">
-          {messages.map((message, i) => {
-            return <Message key={i} message={message} />
-          })}
         </div>
-        <div ref={messagesEndRef}>
+        <div className="message-area">
+          {messages.map((jsonMessage, i) => {
+            return <Message key={i} jsonMessage={jsonMessage} />
+          })}
+          <div ref={messagesEndRef}>
+          </div>
+        </div>
+        <div>
           <form id="input-form" onSubmit={handleSubmit}>
             <div className="input-area">
-              <input type="text" placeholder="..." onChange={ e=> setTextInput(e.target.value) }/>
+              <input type="text" value={textInput} onChange={handleTextInputChange}/>
             </div>
           </form>
         </div>

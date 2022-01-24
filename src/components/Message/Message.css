@@ -8,8 +8,34 @@
 //------------------------------------------------------------------------------
 */
 
+.message-room-details {
+  white-space: pre-wrap;
+  margin-top: 4px;
+  margin-bottom: 4px;
+  font-size: 8pt;
+  font-family: monospace;
+}
+
+.message-room-details-summary {
+  font-weight: bold;
+}
+
+.message-room-details-description {
+
+}
+
+.message-room-details-exits {
+  color: darkslateblue;
+}
+
+.message-room-details-characters {
+  color: darkgoldenrod;
+}
+
 .message-text {
   white-space: pre-wrap;
   margin-top: 4px;
   margin-bottom: 4px;
+  font-size: 8pt;
+  font-family: monospace;
 }
