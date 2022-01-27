@@ -1,0 +1,42 @@
+/*
+//------------------------------------------------------------------------------
+// MJMUD Frontend
+// Copyright (C) 2022, Matt Jordan
+//
+// This program is free software, distributed under the terms of the
+// MIT License. See the LICENSE file at the top of the source tree.
+//------------------------------------------------------------------------------
+*/
+
+.character-game-info-container {
+  display: flex;
+  white-space: pre-wrap;
+  margin: 1px;
+  font-size: 8pt;
+  font-family: monospace;
+}
+
+.character-game-info-name {
+  font-weight: bold;
+  margin-left: 2px;
+  margin-right: 2px;
+}
+
+.character-game-info-hitpoints {
+  color: darkred;
+  margin-left: 2px;
+  margin-right: 2px;
+}
+
+.character-game-info-manapoints {
+  color: darkblue;
+  margin-left: 2px;
+  margin-right: 2px;
+}
+
+.character-game-info-energypoints {
+  color: darkgoldenrod;
+  margin-left: 2px;
+  margin-right: 2px;
+}
+
