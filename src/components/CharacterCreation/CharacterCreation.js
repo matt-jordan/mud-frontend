@@ -137,7 +137,7 @@ export default function CharacterCreation({ account, onSuccess }) {
             <option value="fighter">Fighter</option>
             <option value="priest">Priest</option>
             <option value="rogue">Rogue</option>
-            <option value="wizard">Wizard</option>
+            <option value="mage">Mage</option>
           </select>
         </label>
         <label>
