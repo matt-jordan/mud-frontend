@@ -13,7 +13,6 @@
 }
 .main-pane {
   display: flex;
-  flex-wrap: wrap;
-  overflow: auto;
+  flex-direction: row;
   margin-left: 60px;
 }

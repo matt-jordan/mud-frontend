@@ -9,9 +9,9 @@
 */
 
 .character-panel {
+  flex: 1 1;
   margin: 10px;
   height: 320px;
-  min-width: 320px;
   border: 1px solid gray;
   border-radius: 5px;
 }
@@ -24,7 +24,6 @@
 
 .message-area {
   height: 240px;
-  min-width:  320px;
   overflow-y: auto;
   overflow-x: hidden;
   border: 1px solid gray;
