@@ -18,11 +18,13 @@ export default function Message({ jsonMessage }) {
     case 'RoomDetails':
       const exits = jsonMessage.exits.map((exit) => exit.direction).join(', ');
       const characters = jsonMessage.characters.map((character) => `  ${character.summary}`).join('\n');
+      const inanimates = jsonMessage.inanimates.map((inanimate) => `  ${inanimate.summary}`).join('\n');
       element = (
         <div className='message-room-details'>
           <div className='message-room-details-summary'>{jsonMessage.summary}</div>
           <div className='message-room-details-description'>{jsonMessage.description}</div>
           <div className='message-room-details-exits'>Exits: {jsonMessage.exits.length === 0 ? 'None' : exits}</div>
+          {jsonMessage.inanimates.length !== 0 ? <div className='message-room-details-inanimates'>{`Objects:\n${inanimates}`}</div> : null }
           {jsonMessage.characters.length !== 0 ? <div className='message-room-details-characters'>{`Characters:\n${characters}`}</div> : null }
         </div>
         );

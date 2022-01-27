@@ -32,6 +32,10 @@
   color: darkgoldenrod;
 }
 
+.message-room-details-inanimates {
+  color: darkturquoise;
+}
+
 .message-text {
   white-space: pre-wrap;
   margin-top: 4px;
