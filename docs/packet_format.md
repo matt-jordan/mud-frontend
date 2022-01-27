@@ -45,20 +45,23 @@ A message about the state of a player character. Typically sent when their state
 
 ```
 {
-	event: 'PlayerCharacterUpdate',
-	characterId: String,
-	attributes: {
-		hitpoints: {
-			max: number,
-			current: number
-		},
-		manapoints: {
-			max: number,
-			current: number
-		},
-		energypoints: {
-			max: number,
-			current: number
+	messageType: 'PlayerCharacterUpdate',
+	character: {
+		id: String,
+		name: String,
+		attributes: {
+			hitpoints: {
+				current: number,
+				base: number,
+			},
+			manapoints: {
+				current: number,
+				base: number,
+			},
+			energypoints: {
+				current: number,
+				base: number,
+			}
 		}
 	}
 }
@@ -71,7 +74,7 @@ A detailed message about the state of a room. Typically sent when a character mo
 
 ```
 {
-	event: 'RoomDetails',
+	messageType: 'RoomDetails',
 	roomId: String,
 	summary: String,
 	description: String,
@@ -100,7 +103,7 @@ A raw text message sent from the service. These have a raw message in them that 
 
 ```
 {
-	event: 'TextMessage',
+	messageType: 'TextMessage',
 	message: String
 }
 
