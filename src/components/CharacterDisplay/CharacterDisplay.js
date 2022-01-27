@@ -12,7 +12,7 @@ import './CharacterDisplay.css'
 
 export default function CharacterDisplay({ character }) {
 
-  return <div className="character-panel">
+  return <div className="character-display-panel">
       <label aria-label="Character Name">
         <p>Name: {character.name}</p>
       </label>
