@@ -6,11 +6,15 @@
 // MIT License. See the LICENSE file at the top of the source tree.
 //------------------------------------------------------------------------------
 
+import getCommand from './getCommand';
+import inventoryCommand from './inventoryCommand';
 import loginCharacter from './loginCharacter';
 import lookCommand from './lookCommand';
 import moveCharacter from './moveCharacter';
 
 const commandRegistry = {
+  'get': getCommand,
+  'inventory': inventoryCommand,
   'login': loginCharacter,
   'look': lookCommand,
   'move': moveCharacter,
