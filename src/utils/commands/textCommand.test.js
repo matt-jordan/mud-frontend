@@ -6,14 +6,14 @@
 // MIT License. See the LICENSE file at the top of the source tree.
 //------------------------------------------------------------------------------
 
-import moveCharacter from './moveCharacter';
+import textCommand from './textCommand';
 
-describe('moveCharacter', () => {
+describe('textCommand', () => {
   test('returns the expected command', () => {
-    const command = moveCharacter(['north'], { characterId: 'foo' });
+    const command = textCommand('move', ['north'], { characterId: 'foo' });
     expect(command).toBeDefined();
-    expect(command.messageType).toEqual('Move');
-    expect(command.parameters.length).toEqual(1);
+    expect(command.messageType).toEqual('move');
+    expect(command.parameters[0]).toEqual('north');
     expect(command.characterId).toEqual('foo');
   });
 });

@@ -6,18 +6,12 @@
 // MIT License. See the LICENSE file at the top of the source tree.
 //------------------------------------------------------------------------------
 
-import getCommand from './getCommand';
-import inventoryCommand from './inventoryCommand';
 import loginCharacter from './loginCharacter';
-import lookCommand from './lookCommand';
-import moveCharacter from './moveCharacter';
+import textCommand from './textCommand';
 
 const commandRegistry = {
-  'get': getCommand,
-  'inventory': inventoryCommand,
   'login': loginCharacter,
-  'look': lookCommand,
-  'move': moveCharacter,
+  'textCommand': textCommand,
 };
 
 let authHeader = {};
@@ -39,11 +33,12 @@ function buildCommand(text, options) {
     command = tokens[0];
     tokens.shift();
 
+    let output;
     if (!(command in commandRegistry)) {
-      throw new CommandException(`Unknown command: ${command}`, command);
+      output = commandRegistry['textCommand'](command, tokens, options);
+    } else {
+      output = commandRegistry[command](tokens, options);
     }
-
-    const output = commandRegistry[command](tokens, options);
 
     return JSON.stringify({
       ...authHeader,

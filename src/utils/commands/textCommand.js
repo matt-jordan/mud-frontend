@@ -6,14 +6,12 @@
 // MIT License. See the LICENSE file at the top of the source tree.
 //------------------------------------------------------------------------------
 
-import inventoryCommand from './inventoryCommand';
+const textCommand = (command, textOptions, options) => {
+  return {
+    messageType: command,
+    parameters: textOptions,
+    characterId: options.characterId,
+  };
+};
 
-describe('inventoryCommand', () => {
-  test('returns the expected command', () => {
-    const command = inventoryCommand('', { characterId: 'foo' });
-    expect(command).toBeDefined();
-    expect(command.messageType).toEqual('Inventory');
-    expect(command.characterId).toEqual('foo');
-  });
-});
-
+export default textCommand;
