@@ -40,3 +40,12 @@
   margin-right: 2px;
 }
 
+.character-game-info-connected-y {
+ color: darkgreen;
+ margin-left: auto;
+}
+
+.character-game-info-connected-n {
+  color: darkred;
+  margin-left: auto;
+}

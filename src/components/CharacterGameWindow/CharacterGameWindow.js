@@ -18,6 +18,7 @@ export default function CharacterGameWindow({ character }) {
   const [messages, setMessages] = useState([]);
   const [textInput, setTextInput] = useState('');
   const [characterDetails, setCharacterDetails] = useState(character);
+  const [connected, setConnected] = useState(false);
   const messagesEndRef = useRef(null);
   let ws = useRef();
 
@@ -26,43 +27,70 @@ export default function CharacterGameWindow({ character }) {
   };
 
   useEffect(() => {
-    if (ws && !ws.current) {
-      ws.current = new window.WebSocket('ws://localhost:8080');
-      ws.current.addEventListener('open', () => {
-        const loginCommand = buildCommand('login', { characterId: character.id });
+    if (!connected) {
+      let handle;
 
-        ws.current.send(loginCommand);
-      });
-      ws.current.addEventListener('close', (e) => {
-        console.log({e}, 'connection closed');
-      });
-      ws.current.addEventListener('message', (e) => {
-        const jsonMessage = JSON.parse(e.data);
-        switch(jsonMessage.messageType) {
-          case 'RoomDetails':
-          case 'TextMessage':
-            messages.push(jsonMessage);
-            setMessages([...messages]);
-            scrollToBottom();
-          break;
-          case 'CharacterDetails':
-            setCharacterDetails(jsonMessage.character);
-          break;
-          default:
-            console.warn('Unknown message type: ', e);
-        }
-      });
+      const tryConnection = () => {
+        messages.push({ messageType: 'SystemMessage', message: 'Connecting to server...'});
+        setMessages([...messages]);
+        scrollToBottom();
+
+        ws.current = new window.WebSocket('ws://localhost:8080');
+        ws.current.addEventListener('open', () => {
+          setConnected(true);
+          const loginCommand = buildCommand('login', { characterId: character.id });
+          ws.current.send(loginCommand);
+          if (handle) {
+            clearTimeout(handle);
+          }
+        });
+        ws.current.addEventListener('close', (e) => {
+          messages.push({ messageType: 'SystemMessage', message: 'Connection to server closed.' });
+          setMessages([...messages]);
+          scrollToBottom();
+          setConnected(false);
+          handle = setTimeout(tryConnection, 5000);
+        });
+        ws.current.addEventListener('message', (e) => {
+          const jsonMessage = JSON.parse(e.data);
+          switch(jsonMessage.messageType) {
+            case 'RoomDetails':
+            case 'TextMessage':
+              messages.push(jsonMessage);
+              setMessages([...messages]);
+              scrollToBottom();
+            break;
+            case 'CharacterDetails':
+              setCharacterDetails(jsonMessage.character);
+            break;
+            default:
+              console.warn('Unknown message type: ', e);
+          }
+        });
+      };
+      tryConnection();
     }
 
-    return () => { ws.current = null; };
+    return () => {
+      setConnected(false);
+      ws.current = null;
+    };
   }, []);
 
   const handleSubmit = async e => {
     e.preventDefault();
+    if (!ws.current || ws.current.readyState !== 1) {
+      setTextInput('');
+      messages.push({ messageType: 'SystemMessage', message: 'Not connected to server'});
+      setMessages([...messages]);
+      scrollToBottom();
+      return;
+    }
+
     try {
       ws.current.send(buildCommand(textInput, { characterId: character.id }));
     } catch (error) {
-      console.log(error);
+      console.error(error);
     }
     setTextInput('');
   };
@@ -73,7 +101,7 @@ export default function CharacterGameWindow({ character }) {
 
   return (
     <div className="character-panel">
-      <CharacterGameInfo character={characterDetails} />
+      <CharacterGameInfo character={characterDetails} connected={connected} />
       <div className="message-area">
         {messages.map((jsonMessage, i) => {
           return <Message key={i} jsonMessage={jsonMessage} />

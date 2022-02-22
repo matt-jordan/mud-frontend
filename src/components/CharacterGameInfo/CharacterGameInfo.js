@@ -10,7 +10,7 @@ import React, { useState } from 'react';
 import PropTypes from 'prop-types';
 import './CharacterGameInfo.css'
 
-export default function CharacterGameInfo({ character }) {
+export default function CharacterGameInfo({ character, connected }) {
   const [hitpoints, setHitpoints] = useState({ current: 0, base: 0 });
   const [manapoints, setManapoints] = useState({ current: 0, base: 0 });
   const [energypoints, setEnergypoints] = useState({ current: 0, base: 0 });
@@ -45,11 +45,13 @@ export default function CharacterGameInfo({ character }) {
       <div className='character-game-info-hitpoints'>[{hitpoints.current}/{hitpoints.base}]</div>
       <div className='character-game-info-manapoints'>[{manapoints.current}/{manapoints.base}]</div>
       <div className='character-game-info-energypoints'>[{energypoints.current}/{energypoints.base}]</div>
+      <div className={connected ? 'character-game-info-connected-y' : 'character-game-info-connected-n'}>{connected ? 'Y' : 'N'}</div>
     </div>
   </React.Fragment>);
 }
 
 CharacterGameInfo.propTypes = {
   character: PropTypes.object.isRequired,
+  connected: PropTypes.bool,
 };
 

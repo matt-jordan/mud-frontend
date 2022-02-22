@@ -32,6 +32,9 @@ export default function Message({ jsonMessage }) {
     case 'TextMessage':
       element = <div className='message-text'>{jsonMessage.message}</div>;
     break;
+    case 'SystemMessage':
+      element = <div className='system-message-text'>{jsonMessage.message}</div>;
+    break;
     default:
       element = <div></div>;
   }
