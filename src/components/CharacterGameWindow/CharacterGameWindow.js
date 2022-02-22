@@ -56,6 +56,7 @@ export default function CharacterGameWindow({ character }) {
           switch(jsonMessage.messageType) {
             case 'RoomDetails':
             case 'TextMessage':
+            case 'CombatMessage':
               messages.push(jsonMessage);
               setMessages([...messages]);
               scrollToBottom();
