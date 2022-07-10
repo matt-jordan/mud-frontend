@@ -26,7 +26,7 @@ export default function CharacterGameWindow({ character }) {
     messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
   };
 
-  const scheme = `${process.env.REACT_APP_WS_SCHEME} ?? 'ws'`;
+  const scheme = `${process.env.REACT_APP_WS_SCHEME ?? 'ws'}`;
   const server = `${process.env.REACT_APP_SERVER_URI ?? 'localhost'}`;
   const port = `${process.env.REACT_APP_PORT ?? '8080'}`;
 
