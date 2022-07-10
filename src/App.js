@@ -9,7 +9,7 @@
 import React, { useEffect, useState } from 'react';
 import './App.css';
 import { BrowserRouter, Route, Routes } from 'react-router-dom';
-import axios from 'axios';
+import { getAccountDetails } from '../utils/restAPI';
 
 import Sidebar from './components/Sidebar/Sidebar';
 import Dashboard from './views/Dashboard/Dashboard';
@@ -19,17 +19,6 @@ import Characters from './views/Characters/Characters';
 import useToken from './components/App/useToken';
 import useAccountName from './components/App/useAccountName';
 
-// TODO: Consider moving this
-async function getAccountDetails(accountName, token) {
-  const response = await axios.get(`http://localhost:8080/accounts/${accountName}`, {
-    headers: {
-      'Authorization': `Bearer ${token}`,
-    },
-  });
-
-  return response.data;
-}
-
 function App() {
   const { token, setToken } = useToken();
   const {accountName, setAccountName} = useAccountName();
@@ -37,7 +26,7 @@ function App() {
 
   useEffect(() => {
     if (accountName && !account) {
-      getAccountDetails(accountName, token)
+      getAccountDetails(accountName)
         .then((fullAccount) => {
           setAccount(fullAccount);
         });

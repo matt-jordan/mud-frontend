@@ -26,6 +26,9 @@ export default function CharacterGameWindow({ character }) {
     messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
   };
 
+  const server = `${process.env.REACT_APP_SERVER_URI ?? 'localhost'}`;
+  const port = `${process.env.REACT_APP_PORT ?? '8080'}`;
+
   useEffect(() => {
     if (!connected) {
       let handle;
@@ -35,7 +38,7 @@ export default function CharacterGameWindow({ character }) {
         setMessages([...messages]);
         scrollToBottom();
 
-        ws.current = new window.WebSocket('ws://localhost:8080');
+        ws.current = new window.WebSocket(`ws://${server}:${port}`);
         ws.current.addEventListener('open', () => {
           setConnected(true);
           const loginCommand = buildCommand('login', { characterId: character.id });
