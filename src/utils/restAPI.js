@@ -10,7 +10,11 @@ import axios from 'axios';
 
 let authHeader;
 
-const serverUri = 'http://localhost:8080';
+const scheme = `${process.env.REACT_APP_SCHEME ?? 'http'}`;
+const server = `${process.env.REACT_APP_SERVER_URI ?? 'localhost'}`;
+const port = `${process.env.REACT_APP_PORT ?? '8080'}`;
+
+const serverUri = `${scheme}://${server}:${port}`;
 
 function initAPI(token) {
   authHeader = { 'Authorization': `Bearer ${token}` };
