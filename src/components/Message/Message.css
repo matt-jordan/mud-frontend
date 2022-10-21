@@ -53,6 +53,15 @@
   color: red;
 }
 
+.party-text {
+  white-space: pre-wrap;
+  margin-top: 4px;
+  margin-bottom: 4px;
+  font-size: 8pt;
+  font-family: monospace;
+  color: green;
+}
+
 .system-message-text {
   white-space:  pre-wrap;
   margin-top: 4px;

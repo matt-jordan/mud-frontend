@@ -32,6 +32,13 @@ export default function Message({ jsonMessage }) {
     case 'CombatMessage':
       element = <div className='combat-text'>{jsonMessage.message}</div>;
     break;
+    case 'PartyStatus':
+      const message = jsonMessage.message;
+      const summary = `${message.leader.name}'s Party (${message.size}/${message.maxSize})\n`;
+      const leader = ` * ${message.leader.name}: L${message.leader.classes[0].level} ${message.leader.classes[0].type} [${message.leader.classes[0].experience}/${message.leader.classes[0].maxExperience}]\n`;
+      const members = message.members.map((member) => ` - ${member.name}: L${member.classes[0].level} ${member.classes[0].type} [${member.classes[0].experience}/${member.classes[0].maxExperience}]`).join('\n');
+      element = <div className='party-text'>{summary}{leader}{members}</div>;
+    break;
     case 'TextMessage':
       element = <div className='message-text'>{jsonMessage.message}</div>;
     break;
