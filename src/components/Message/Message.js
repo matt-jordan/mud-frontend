@@ -16,7 +16,13 @@ export default function Message({ jsonMessage }) {
   let element;
   switch (jsonMessage.messageType) {
     case 'RoomDetails':
-      const exits = jsonMessage.exits.map((exit) => exit.direction).join(', ');
+      const exits = jsonMessage.exits.map((exit) => {
+        if (exit.door) {
+          return `${!exit.door.isOpen ? '[' : ''}${exit.direction}${!exit.door.isOpen ? ']' : ''} (${exit.door.name})`;
+        } else {
+          return exit.direction;
+        }
+      }).join(', ');
       const characters = jsonMessage.characters.map((character) => `  ${character.summary}`).join('\n');
       const inanimates = jsonMessage.inanimates.map((inanimate) => `  ${inanimate.summary}`).join('\n');
       element = (
